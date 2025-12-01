@@ -1,7 +1,7 @@
 import numpy as np
 
 from src.classifier import AdaBoost
-from src.weak_learner import DecisionStump
+from src.weak_learner import DecisionStump, DecisionTree
 from src.utils import calc_accuracy
 
 
@@ -11,13 +11,13 @@ def make_dataset(n_samples=500, random_state=42):
 
     Parameters:
     ----------
-    n_samples : количество точек в датасете
-    random_state : seed для генератора случайных чисел
+    n_samples: количество точек в датасете
+    random_state: seed для генератора случайных чисел
 
     Returns:
     ----------
-    X : матрица признаков
-    y : вектор ответов
+    X: матрица признаков
+    y: вектор ответов
     """
 
     rng = np.random.default_rng(random_state)
@@ -39,13 +39,14 @@ def example_1():
     """
     X, y = make_dataset()
     print("Example 1:")
-    for T in range(1, 100):
-        model = AdaBoost(weak_learner=DecisionStump, T=T)
-        model.fit(X, y)
 
-        y_pred = model.predict(X)
-        accuracy = calc_accuracy(y, y_pred)
-        print(f"T: {T}, accuracy: {accuracy}")
+    model = AdaBoost(weak_learner=DecisionStump, T=10)
+    model.fit(X, y)
+
+    y_pred = model.predict(X)
+    accuracy = calc_accuracy(y, y_pred)
+
+    print(f"T = {10}, accuracy = {accuracy}")
 
 
 def example_2():
@@ -56,18 +57,55 @@ def example_2():
 
     p = np.ones(len(y), dtype=float)
     p[y == 1] = 2.0
-    p = p / p.sum() 
-    
-    print("Example 2:")
-    for T in range(1, 100):
-        model = AdaBoost(weak_learner=DecisionStump, T=T)
-        model.fit(X, y, p=p)
+    p = p / p.sum()
 
-        y_pred = model.predict(X)
-        accuracy = calc_accuracy(y, y_pred)
-        print(f"T: {T}, accuracy: {accuracy}")
+    print("Example 2:")
+
+    model = AdaBoost(weak_learner=DecisionStump, T=10)
+    model.fit(X, y, p=p)
+
+    y_pred = model.predict(X)
+    accuracy = calc_accuracy(y, y_pred)
+    print(f"T = {10}, accuracy = {accuracy}")
+
+
+def example_3():
+    """
+    Пример работы AdaBoost без весов и простым классификатором в виде решающего пня и визуализацией
+    """
+    X, y = make_dataset()
+    print("Example 3:")
+    model = AdaBoost(weak_learner=DecisionTree, T=10)
+    model.fit(X, y, visualize=True)
+
+    y_pred = model.predict(X)
+    accuracy = calc_accuracy(y, y_pred)
+
+    print(f"T = {10}, accuracy = {accuracy}")
+
+
+def example_4():
+    """
+    Пример работы AdaBoost с весами и простым классификатором в виде решающего дерева и визуализацией
+    """
+    X, y = make_dataset()
+
+    p = np.ones(len(y), dtype=float)
+    p[y == 1] = 2.0
+    p = p / p.sum()
+
+    print("Example 4:")
+    model = AdaBoost(weak_learner=DecisionTree, T=10)
+    model.fit(X, y, p=p, visualize=True)
+
+    y_pred = model.predict(X)
+    accuracy = calc_accuracy(y, y_pred)
+
+    print(f"T = {10}, accuracy = {accuracy}")
 
 
 if __name__ == "__main__":
     example_1()
     example_2()
+    example_3()
+    example_4()
