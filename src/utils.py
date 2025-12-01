@@ -216,9 +216,7 @@ def visualize_errors(errors, upper_bounds, ensemble_error, steps):
     plt.plot(steps, upper_bounds, color="red", label="Верхняя граница ошибки")
     plt.xlabel("Шаги")
     plt.ylabel("Значение ошибок")
-    plt.title(
-        "График зависимости ошибки на одном алгоритме,\n на ансамбле и её верхней границы от количества шагов"
-    )
+    plt.title("График зависимости ошибок от количества шагов")
     plt.legend()
     plt.show()
 
