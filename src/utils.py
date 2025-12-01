@@ -210,7 +210,7 @@ def visualize_errors(errors, upper_bounds, ensemble_error, steps):
         steps,
         errors,
         color="blue",
-        label="Ошибка одного алгаритма при исправленных весах",
+        label="Ошибка одного алгоритма при исправленных весах",
     )
     plt.plot(steps, ensemble_error, color="green", label="Ошибка ансамбля")
     plt.plot(steps, upper_bounds, color="red", label="Верхняя граница ошибки")
